@@ -5,48 +5,37 @@
 #                                                     +:+ +:+         +:+      #
 #    By: miltavar <miltavar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/05/08 15:49:28 by milo              #+#    #+#              #
-#    Updated: 2025/05/19 12:41:42 by miltavar         ###   ########.fr        #
+#    Created: 2025/05/15 11:40:39 by bdjoco            #+#    #+#              #
+#    Updated: 2025/05/26 14:05:35 by miltavar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
+NAME		= libftprintf.a
+CC			= cc
+CFLAGS		= -Wall -Wextra -Werror -g -I.
 
-NAME = libftprintf.a
-CC = cc
-CFLAGS = -Wall -Wextra -Werror
-RM = rm -f
+SRCS		= src/ft_printf.c src/ft_printf_utils.c src/ft_printf_types.c \
+			src/ft_printf_types_utils.c src/lib_utils.c
+OBJS		= $(SRCS:.c=.o)
+
 AR = ar rcs
-SRC = ft_printf.c ft_printf_types_utils.c \
-ft_printf_types.c ft_printf_utils.c
-LIBFT_DIR = Libft
-LIBFT = $(LIBFT_DIR)/libft.a
-HEADER_DIR	= -I .
+RM = rm -f
 
-OBJ = $(SRC:.c=.o)
+all : $(NAME)
 
-all: $(NAME)
-
-$(NAME) : temp_printf.a $(LIBFT)
-	ar -rcT $(NAME) $(LIBFT) temp_printf.a
-
-temp_printf.a : $(OBJ)
-	$(AR) $@ $(OBJ)
-
-$(LIBFT) :
-	$(MAKE) -C $(LIBFT_DIR)
-
+$(NAME) : $(OBJS)
+	$(AR) $(NAME) $(OBJS)
 
 %.o: %.c
-	$(CC) $(CFLAGS) $(HEADER_DIR) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
-clean:
-	$(MAKE) -C $(LIBFT_DIR) clean
-	$(RM) $(OBJ) temp_printf.a
+clean :
+	$(RM) $(OBJS)
 
-fclean: clean
-	$(MAKE) -C $(LIBFT_DIR) fclean
-	$(RM) $(NAME)
+fclean :
+	$(RM) $(NAME) $(OBJS)
 
-re: fclean all
+re : fclean all
 
-.PHONY: all clean fclean re bonus
+.PHONY : all clean fclean re bonus
+
